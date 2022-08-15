@@ -21,7 +21,9 @@
     * DB_PORT = porta do banco de dados (ex: 3306)
 
 * Configurar o CORS_ORIGIN (variável de ambiente):
-    * CORS_ORIGIN_WHITELIST=http://localhost:8080
+    * CORS_ORIGIN_WHITELIST = http://localhost:8080
+
+#### *** TODAS AS VARIÁVEIS ACIMA DEVEM ESTAR SETADAS NO SHELL *** 
   
 * Para criar o banco (ex. em MySQL) e dar acesso ao usuário os seguintes comandos devem ser executados:
     *  mysql -u root -p < CAMINHO_DO_PROJETO/script_db/create_db.sql
@@ -30,7 +32,7 @@
     * o script já dá permissão para a criação do banco de teste (test_desafio no caso)
     ```
     
-* Executar os comandos dentro da pasta interna "desafio" e "cliente" para atualizar e migrar o esquema a partir do Django para o MySQL
+* Executar os comandos dentro da pasta do porjeto para atualizar e migrar o esquema a partir do Django para o MySQL (ou outro DB)
     ```
     python manage.py makemigrations
     python manage.py migrate
@@ -58,9 +60,9 @@
    
 
 # Teste do Projeto
-* Para executar os testes basta digitar o comando abaixo dentro da pasta "cliente"
+* Para executar os testes basta digitar o comando abaixo dentro da pasta do projeto (com as variáveis de ambiente configuradas)
     ```
-    python manage.py test
+    python -m pytest
     ```
 ---
 
