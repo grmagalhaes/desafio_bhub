@@ -15,7 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.urls import include
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('cliente/', include("cliente.urls"))
 ]
+
+# if settings.DEBUG:
+#    urlpatterns += static(r'/favicon.ico', document_root='static/favicon.ico')
