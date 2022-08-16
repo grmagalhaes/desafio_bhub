@@ -28,7 +28,7 @@ class DadosBancarios(models.Model):
     banco = models.CharField(max_length=3, blank=False)
     agencia = models.CharField(max_length=6, blank=False)
     conta = models.CharField(max_length=12, blank=False)
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, null=True)
+    cliente = models.ForeignKey(Cliente, related_name='contas', on_delete=models.CASCADE, null=True)
 
     objects = models.Manager()
 

@@ -1,0 +1,222 @@
+{
+	"info": {
+		"_postman_id": "d25118e8-6680-47af-af00-cb319475449f",
+		"name": "BHub",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7027647"
+	},
+	"item": [
+		{
+			"name": "create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"razao_social\":\"ACME3 LTDA\", \"endereco\": \"Av Brasil, 123\", \"telefone\": \"1234-6789\", \"faturamento_declarado\": \"12345.98\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{hostname}}/v1/cliente/create",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"v1",
+						"cliente",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{hostname}}/v1/cliente/get?id=13",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"v1",
+						"cliente",
+						"get"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "13"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{hostname}}/v1/cliente/list",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"v1",
+						"cliente",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\":13, \"telefone\":\"555555\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{hostname}}/v1/cliente/update",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"v1",
+						"cliente",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{hostname}}/v1/cliente/delete?id=19",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"v1",
+						"cliente",
+						"delete"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "19"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add_account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"cliente\": 13, \"banco\" : \"600\", \"agencia\": \"2222\", \"conta\": \"3333\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{hostname}}/v1/cliente/add_account",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"v1",
+						"cliente",
+						"add_account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "remove_account",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{hostname}}/v1/cliente/remove_account?id=12",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"v1",
+						"cliente",
+						"remove_account"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "12"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "readiness",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{hostname}}/readiness",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"readiness"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "healthz",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{hostname}}/readiness",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"readiness"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

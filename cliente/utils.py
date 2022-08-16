@@ -1,23 +1,4 @@
-import locale
 import os
-from decimal import Decimal, InvalidOperation
-
-
-def format_fiat(value, decimal_places=2):
-    try:
-        value_decimal = Decimal(value).__round__(decimal_places)
-    except ValueError:
-        value_decimal = value
-    except (TypeError, InvalidOperation):
-        value_decimal = Decimal(f"{value:2}")
-    return locale.currency(Decimal(f"{value_decimal:{20}.{2}f}"), grouping=True, symbol=False).replace(".",
-                                                                                                       "_").replace(",",
-                                                                                                                    ".").replace(
-        "_", ",")
-
-
-def format_float_to_decimal(value) -> Decimal:
-    return Decimal('{0:.4f}'.format(value))
 
 
 def hardening_header():

@@ -1,0 +1,176 @@
+openapi: 3.0.0
+info:
+  title: BHub
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+paths:
+  /v1/cliente/create:
+    post:
+      tags:
+        - desafio
+      summary: criar uma conta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                razao_social: ACME3 LTDA
+                endereco: Av Brasil, 123
+                telefone: 1234-6789
+                faturamento_declarado: '12345.98'
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json: {}
+        '400':
+          description: Erro
+          content:
+            application/json: {}
+  /v1/cliente/get:
+    get:
+      tags:
+        - desafio
+      summary: recuperar o cliente e suas contas
+      parameters:
+        - name: id
+          in: query
+          schema:
+            type: integer
+          example: '13'
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json: {}
+        '404':
+          description: Não Encontrado
+          content:
+            application/json: {}
+  /v1/cliente/list:
+    get:
+      tags:
+        - desafio
+      summary: listar todas as contas
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json: {}
+  /v1/cliente/update:
+    put:
+      tags:
+        - desafio
+      summary: atualizar os dados de um cliente
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                id: 13
+                telefone: '555555'
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json: {}
+        '400':
+          description: Erro
+          content:
+            application/json: {}
+  /v1/cliente/delete:
+    delete:
+      tags:
+        - desafio
+      summary: apagar um cliente
+      parameters:
+        - name: id
+          in: query
+          schema:
+            type: integer
+          example: '19'
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json: {}
+        '404':
+          description: Não Encontrado
+          content:
+            application/json: {}
+  /v1/cliente/add_account:
+    post:
+      tags:
+        - desafio
+      summary: adicionar uma conta a um cliente
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                cliente: 13
+                banco: '600'
+                agencia: '2222'
+                conta: '3333'
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json: {}
+        '400':
+          description: Erro
+          content:
+            application/json: {}
+  /v1/cliente/remove_account:
+    delete:
+      tags:
+        - desafio
+      summary: remover uma conta de um cliente
+      parameters:
+        - name: id
+          in: query
+          schema:
+            type: integer
+          example: '12'
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json: {}
+        '400':
+          description: Erro
+          content:
+            application/json: {}
+  /readiness:
+    get:
+      tags:
+        - desafio
+      summary: retorna ok se o banco está ativo
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            text/html: {}
+        '500':
+          description: Erro Interno
+          content:
+            text/html: {}
+  /healthz:
+    get:
+      tags:
+        - desafio
+      summary: retorna ok se o app está ativo
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            text/html: {}
+        '500':
+          description: Erro Interno
+          content:
+            text/html: {}
+
