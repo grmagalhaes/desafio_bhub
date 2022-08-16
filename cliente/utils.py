@@ -21,7 +21,7 @@ def format_float_to_decimal(value) -> Decimal:
 
 
 def hardening_header():
-    # recovering the url and extracting the hostname from it
+    # reforçando a segurança do header
 
     CORS_ORIGIN_WHITELIST = os.environ.get('CORS_ORIGIN_WHITELIST'),
     hostname = CORS_ORIGIN_WHITELIST[0].split("/")[2]

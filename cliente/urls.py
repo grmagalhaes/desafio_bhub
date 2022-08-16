@@ -1,12 +1,11 @@
 from django.urls import path
 
-from .views import Status
+from .views import ClientViewSet
 
-status = Status.as_view({"get": "get"})
+create = ClientViewSet.as_view({"post": "create"})
 
 urlpatterns = [
-    path("criar/", status, name="status"),
-    path("status", Status.as_view({"get": "get"}), name="status"),
+    path("create", create, name="create"),
 ]
 
 # if settings.DEBUG:
