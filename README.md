@@ -73,7 +73,7 @@
 * Está na pasta openapi na raiz do projeto (openapi.yml)
 ---
 
-# Melhorias
+# Melhorias - futuro
 
 * Inclusão de oauth2 com classe de authenticação em cada BO
 * Testes do DockerFile e docker-compose
