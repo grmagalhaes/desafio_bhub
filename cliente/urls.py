@@ -3,11 +3,13 @@ from django.urls import path
 from .views import ClientViewSet
 
 create = ClientViewSet.as_view({"post": "create"})
-read = ClientViewSet.as_view({"get": "read"})
+get = ClientViewSet.as_view({"get": "get"})
+delete = ClientViewSet.as_view({"delete": "delete"})
 
 urlpatterns = [
     path("create", create, name="create"),
-    path("read", read, name="read"),
+    path("get", get, name="get"),
+    path("delete", delete, name="delete"),
 ]
 
 # if settings.DEBUG:

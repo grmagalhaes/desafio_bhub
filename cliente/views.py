@@ -5,10 +5,9 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 from rest_framework import status
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.utils import IntegrityError
-
 from cliente.utils import hardening_header
-
 from .models import Cliente, DadosBancarios
 from .serializers import ClienteSerializer, DadosBancariosSerializer
 
@@ -18,6 +17,7 @@ from .messages import ClienteMessages as Msg
 class ClientViewSet(ViewSet):
     authentication_classes = []
 
+    # cria um cliente sem contas vinculadas
     def create(self, request):
         try:
             serializer = ClienteSerializer(data=request.data, partial=True)
@@ -36,8 +36,8 @@ class ClientViewSet(ViewSet):
             return Response(data=dict(msg=Msg.ERRO_CADASTRO_CLIENTE, id=None),
                             status=status.HTTP_400_BAD_REQUEST, headers=hardening_header())
 
-
-    def read(self, request):
+    # retorna um cliente e todas as suas contas
+    def get(self, request):
         client_id = request.query_params.get('id')
         clientes = Cliente.objects.filter(pk=client_id).values()
         if len(clientes) > 0:
@@ -51,15 +51,23 @@ class ClientViewSet(ViewSet):
             return Response(data=dict(msg=Msg.CLIENTE_NAO_ENCONTRADO, id=None),
                             status=status.HTTP_404_NOT_FOUND, headers=hardening_header())
 
+    # atualiza um cliente
     def update(self, request):
         clientes = Cliente.objects.all()
         serializer = ClienteSerializer(clientes, many=True)
         return Response(data=serializer.data, headers=hardening_header())
 
+    # remove um cliente e todas as contas vinculadas a ele
     def delete(self, request):
-        clientes = Cliente.objects.all()
-        serializer = ClienteSerializer(clientes, many=True)
-        return Response(data=serializer.data, headers=hardening_header())
+        client_id = request.query_params.get('id')
+        try:
+            cliente = Cliente.objects.get(pk=client_id)
+            if cliente is not None:
+                cliente.delete()
+                return Response(status=status.HTTP_204_NO_CONTENT, headers=hardening_header())
+        except (ObjectDoesNotExist,):
+            return Response(data=dict(msg=Msg.CLIENTE_NAO_ENCONTRADO, id=None),
+                            status=status.HTTP_404_NOT_FOUND, headers=hardening_header())
 
     def list(self, request):
         clientes = Cliente.objects.all()
