@@ -12,7 +12,7 @@ from cliente.utils import hardening_header
 from .models import Cliente, DadosBancarios
 from .serializers import ClienteSerializer, DadosBancariosSerializer
 
-from .messages import CLIENTE_CADASTRADO_SUCESSO, CLIENTE_JA_CADASTRADO, ERRO_CADASTRO_CLIENTE
+from .messages import ClienteMessages as Msg
 
 
 class ClientViewSet(ViewSet):
@@ -23,25 +23,33 @@ class ClientViewSet(ViewSet):
             serializer = ClienteSerializer(data=request.data, partial=True)
             if serializer.is_valid():
                 cliente = serializer.save()
-                return Response(data=dict(msg=CLIENTE_CADASTRADO_SUCESSO, id=cliente.id),
+                return Response(data=dict(msg=Msg.CLIENTE_CADASTRADO_SUCESSO, id=cliente.id),
                                 status=status.HTTP_200_OK, headers=hardening_header())
             else:
-                return Response(data=dict(msg=ERRO_CADASTRO_CLIENTE, id=None),
+                return Response(data=dict(msg=Msg.ERRO_CADASTRO_CLIENTE, id=None),
                                 status=status.HTTP_400_BAD_REQUEST, headers=hardening_header())
 
         except (IntegrityError,) as e:
-            return Response(data=dict(msg=CLIENTE_JA_CADASTRADO, id=None),
+            return Response(data=dict(msg=Msg.CLIENTE_JA_CADASTRADO, id=None),
                             status=status.HTTP_400_BAD_REQUEST, headers=hardening_header())
         except (Exception,) as e:
-            return Response(data=dict(msg='Erro de Cadastro de Cliente', id=None),
+            return Response(data=dict(msg=Msg.ERRO_CADASTRO_CLIENTE, id=None),
                             status=status.HTTP_400_BAD_REQUEST, headers=hardening_header())
-
 
 
     def read(self, request):
-        clientes = Cliente.objects.all()
-        serializer = ClienteSerializer(clientes, many=True)
-        return Response(data=serializer.data, headers=hardening_header())
+        client_id = request.query_params.get('id')
+        clientes = Cliente.objects.filter(pk=client_id).values()
+        if len(clientes) > 0:
+            serializer = ClienteSerializer(data=clientes[0], partial=True)
+            if serializer.is_valid():
+                return Response(data=serializer.validated_data, headers=hardening_header())
+            else:
+                return Response(data=dict(msg=Msg.ERRO_CADASTRO_CLIENTE, id=None),
+                                status=status.HTTP_400_BAD_REQUEST, headers=hardening_header())
+        else:
+            return Response(data=dict(msg=Msg.CLIENTE_NAO_ENCONTRADO, id=None),
+                            status=status.HTTP_404_NOT_FOUND, headers=hardening_header())
 
     def update(self, request):
         clientes = Cliente.objects.all()
