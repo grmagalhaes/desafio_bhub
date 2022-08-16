@@ -43,8 +43,11 @@ class ClientViewSet(ViewSet):
 
         if len(clientes) > 0:
             serializer = ClienteSerializer(data=clientes[0], partial=True)
+
+            contas = list(DadosBancarios.objects.filter(cliente=client_id).values())
+
             if serializer.is_valid():
-                print(serializer.validated_data)
+                serializer.validated_data['contas'] = contas
                 return Response(data=serializer.validated_data, headers=hardening_header())
             else:
                 return Response(data=dict(msg=Msg.ERRO_CADASTRO_CLIENTE, id=None),
@@ -59,6 +62,12 @@ class ClientViewSet(ViewSet):
         serializer = ClienteSerializer(clientes, many=True)
         return Response(data=serializer.data, headers=hardening_header())
 
+    # atualiza um cliente
+    def list(self, request):
+        clientes = Cliente.objects.all().values()
+        serializer = ClienteSerializer(clientes, many=True)
+        return Response(data=serializer.data, headers=hardening_header())
+
     # remove um cliente e todas as contas vinculadas a ele
     def delete(self, request):
         client_id = request.query_params.get('id')
@@ -67,25 +76,42 @@ class ClientViewSet(ViewSet):
             if cliente is not None:
                 cliente.delete()
                 return Response(status=status.HTTP_204_NO_CONTENT, headers=hardening_header())
+            else:
+                return Response(data=dict(msg=Msg.CLIENTE_NAO_ENCONTRADO, id=None),
+                                status=status.HTTP_404_NOT_FOUND, headers=hardening_header())
         except (ObjectDoesNotExist,):
             return Response(data=dict(msg=Msg.CLIENTE_NAO_ENCONTRADO, id=None),
                             status=status.HTTP_404_NOT_FOUND, headers=hardening_header())
-
-    def list(self, request):
-        clientes = Cliente.objects.all()
-        serializer = ClienteSerializer(clientes, many=True)
-        return Response(data=serializer.data, headers=hardening_header())
 
 
 class DadosBancariosViewSet(ViewSet):
 
     def add_account(self, request):
-        clientes = Cliente.objects.all()
-        serializer = ClienteSerializer(clientes, many=True)
-        return Response(data=serializer.data, headers=hardening_header())
+        dados_bancarios = DadosBancariosSerializer(data=request.data, partial=True)
+        if dados_bancarios.is_valid():
+            try:
+                dados_bancarios.save()
+                return Response(data=dict(msg=Msg.CONTA_CADASTRADA_SUCESSO),
+                                status=status.HTTP_200_OK, headers=hardening_header())
+            except (IntegrityError,) as e:
+                print (str(e))
+                return Response(data=dict(msg=Msg.CONTA_JA_CADASTRADA),
+                                status=status.HTTP_400_BAD_REQUEST, headers=hardening_header())
+        else:
+            return Response(data=dict(msg=Msg.ERRO_CADASTRO_CONTA),
+                            status=status.HTTP_400_BAD_REQUEST, headers=hardening_header())
 
     def remove_account(self, request):
-        clientes = Cliente.objects.all()
-        serializer = ClienteSerializer(clientes, many=True)
-        return Response(data=serializer.data, headers=hardening_header())
+        conta_id = request.query_params.get('id')
+        try:
+            conta = DadosBancarios.objects.get(pk=conta_id)
+            if conta is not None:
+                conta.delete()
+                return Response(status=status.HTTP_204_NO_CONTENT, headers=hardening_header())
+            else:
+                return Response(data=dict(msg=Msg.CONTA_NAO_ENCONTRADA),
+                                status=status.HTTP_404_NOT_FOUND, headers=hardening_header())
+        except (ObjectDoesNotExist,):
+            return Response(data=dict(msg=Msg.CONTA_NAO_ENCONTRADA),
+                            status=status.HTTP_404_NOT_FOUND, headers=hardening_header())
 

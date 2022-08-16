@@ -9,9 +9,6 @@ class DadosBancariosSerializer(serializers.ModelSerializer):
 
 
 class ClienteSerializer(serializers.ModelSerializer):
-    contas = DadosBancariosSerializer(many=True, read_only=True)
-
     class Meta:
         model = Cliente
-        fields = ['id', 'razao_social', 'telefone', 'endereco', 'data_cadastro', 'faturamento_declarado', 'contas']
-        depth = 1
+        fields = '__all__'

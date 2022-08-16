@@ -73,6 +73,7 @@
 * Deploy em cloud (AWS)
 * Enriquecer mais os testes unitários
 * Colocar mais validadores de campos
+* O endpoint /client/list poderia ter paginação e mostrar as contas
 
 
 
