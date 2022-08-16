@@ -81,7 +81,7 @@ class ClientViewSet(ViewSet):
     def list(self, _):
         clientes = Cliente.objects.all().values()
         serializer = ClienteSerializer(clientes, many=True)
-        return Response(data=serializer.data, headers=hardening_header())
+        return Response(data=serializer.data, status=status.HTTP_200_OK, headers=hardening_header())
 
     # remove um cliente e todas as contas vinculadas a ele
     def delete(self, request):
@@ -109,7 +109,6 @@ class DadosBancariosViewSet(ViewSet):
                 return Response(data=dict(msg=Msg.CONTA_CADASTRADA_SUCESSO),
                                 status=status.HTTP_200_OK, headers=hardening_header())
             except (IntegrityError,) as e:
-                print (str(e))
                 return Response(data=dict(msg=Msg.CONTA_JA_CADASTRADA),
                                 status=status.HTTP_400_BAD_REQUEST, headers=hardening_header())
         else:

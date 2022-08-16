@@ -67,7 +67,10 @@
     ```
   
 # Collection do POSTMAN
-* Está na pasta postman na raiz do projeto
+* Está na pasta postman na raiz do projeto (collection e environment)
+* 
+# Open API 
+* Está na pasta openapi na raiz do projeto (openapi.yml)
 ---
 
 # Melhorias
