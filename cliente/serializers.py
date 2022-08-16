@@ -1,5 +1,3 @@
-from abc import ABC
-
 from rest_framework import serializers
 from .models import Cliente, DadosBancarios
 
@@ -11,6 +9,9 @@ class DadosBancariosSerializer(serializers.ModelSerializer):
 
 
 class ClienteSerializer(serializers.ModelSerializer):
+    contas = DadosBancariosSerializer(many=True, read_only=True)
+
     class Meta:
         model = Cliente
-        fields = '__all__'
+        fields = ['id', 'razao_social', 'telefone', 'endereco', 'data_cadastro', 'faturamento_declarado', 'contas']
+        depth = 1

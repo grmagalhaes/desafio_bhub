@@ -40,9 +40,11 @@ class ClientViewSet(ViewSet):
     def get(self, request):
         client_id = request.query_params.get('id')
         clientes = Cliente.objects.filter(pk=client_id).values()
+
         if len(clientes) > 0:
             serializer = ClienteSerializer(data=clientes[0], partial=True)
             if serializer.is_valid():
+                print(serializer.validated_data)
                 return Response(data=serializer.validated_data, headers=hardening_header())
             else:
                 return Response(data=dict(msg=Msg.ERRO_CADASTRO_CLIENTE, id=None),
@@ -86,7 +88,4 @@ class DadosBancariosViewSet(ViewSet):
         clientes = Cliente.objects.all()
         serializer = ClienteSerializer(clientes, many=True)
         return Response(data=serializer.data, headers=hardening_header())
-
-
-
 
