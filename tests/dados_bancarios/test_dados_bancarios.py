@@ -1,5 +1,6 @@
 import os
 import django
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "desafio.settings")
 django.setup()
 
@@ -11,12 +12,11 @@ from cliente.serializers import DadosBancariosSerializer
 @pytest.mark.django_db
 def test_dados_bancarios_serializer_full():
     try:
-        DadosBancarios.objects.create(banco='005', agencia='1235', conta='12346')
-        registros = DadosBancarios.objects.filter(banco='005', agencia='1235', conta='12346')
-        serializer = DadosBancariosSerializer(data=registros)
+        serializer = DadosBancariosSerializer(data={'banco': '005', 'agencia': '135', 'conta': '1246', 'cliente': None})
         assert serializer.is_valid()
     except (Exception,):
-        assert True
+        assert False
+
 
 @pytest.mark.django_db
 def test_dados_bancarios_serializer_partial():
@@ -25,6 +25,7 @@ def test_dados_bancarios_serializer_partial():
         assert serializer.is_valid()
     except (Exception,):
         assert False
+
 
 @pytest.mark.django_db
 def test_dados_bancarios_serializer_invalid():
@@ -35,16 +36,24 @@ def test_dados_bancarios_serializer_invalid():
         assert False
 
 
-
 @pytest.mark.django_db
-def test_criacao_conta():
-    DadosBancarios.objects.create(banco='001', agencia='1234', conta='12345')
-    registros = DadosBancarios.objects.filter(banco='001', agencia='1234', conta='12345')
-    assert len(registros) == 1
-    if len(registros) == 1:
-        assert registros[0].banco == '001'
-        assert registros[0].agencia == '1234'
-        assert registros[0].conta == '12345'
+def test_create_dado_bancario():
+    serializer_create = DadosBancariosSerializer(data={'banco': '001', 'agencia': '1234', 'conta': '12345'}, partial=True)
+
+    if serializer_create.is_valid():
+        serializer_create.save()
+
+        registros = DadosBancarios.objects.filter(banco='001', agencia='1234', conta='12345')
+
+        if len(registros) == 1:
+            reg = list(registros.values())[0]
+            assert reg.get("banco") == '001'
+            assert reg.get("agencia") == '1234'
+            assert reg.get("conta") == '12345'
+        else:
+            assert False
+    else:
+        assert False
 
 
 @pytest.mark.django_db
@@ -61,4 +70,24 @@ def test_erro_ao_recriar_conta_existente():
     except (Exception,):
         assert True
 
+@pytest.mark.django_db
+def test_delete_dado_bancario():
+    serializer_create = DadosBancariosSerializer(data={'banco': '701', 'agencia': '1234', 'conta': '12345'}, partial=True)
+
+    if serializer_create.is_valid():
+        x = serializer_create.save()
+
+        try:
+            reg = DadosBancarios.objects.get(pk=x.id)
+            reg.delete()
+            assert True
+        except (Exception,):
+            assert False
+
+        try:
+            reg = DadosBancarios.objects.get(pk=x.id)
+            reg.delete()
+            assert False
+        except (Exception,):
+            assert True
 

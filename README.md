@@ -66,5 +66,13 @@
     ```
 ---
 
+# Melhorias
+
+* Inclusão de oauth2 com classe de authenticação em cada BO
+* Testes do DockerFile e docker-compose
+* Deploy em cloud (AWS)
+* Enriquecer mais os testes unitários
+* Colocar mais validadores de campos
+
 
 

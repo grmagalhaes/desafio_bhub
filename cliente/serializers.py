@@ -7,10 +7,10 @@ from .models import Cliente, DadosBancarios
 class DadosBancariosSerializer(serializers.ModelSerializer):
     class Meta:
         model = DadosBancarios
-        fields = ['banco', 'agencia', 'conta']
+        fields = '__all__'
 
 
-class ClientSerializer(serializers.ModelSerializer):
+class ClienteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cliente
-        fields = ['razao_social', 'telefone', 'endereco', 'data_cadastro', 'faturamento_declarado', 'dados_bancarios']
+        fields = '__all__'
