@@ -21,7 +21,7 @@
     * DB_PORT = porta do banco de dados (ex: 3306)
 
 * Configurar o CORS_ORIGIN (variável de ambiente):
-    * CORS_ORIGIN_WHITELIST = http://localhost:8080
+    * CORS_ORIGIN_WHITELIST = http://localhost:8000
 
 #### *** TODAS AS VARIÁVEIS ACIMA DEVEM ESTAR SETADAS NO SHELL *** 
   
@@ -49,12 +49,13 @@
 # Funcionamento do Projeto
 * O Desafio está detalhado no PDF em /bhub (Desafio - BHub.pdf)  
 * Endpints criados
-  * /cliente/create
-  * /cliente/read
-  * /cliente/update
-  * /cliente/delete
-  * /cliente/add_account
-  * /cliente/remove_account
+  * v1/cliente/create
+  * v1/cliente/read
+  * v1/cliente/update
+  * v1/cliente/delete
+  * v1/client/list
+  * v1/cliente/add_account
+  * v1/cliente/remove_account
   * /heathz
   * /readiness
    
@@ -64,6 +65,9 @@
     ```
     python -m pytest
     ```
+  
+# Collection do POSTMAN
+* Está na pasta postman na raiz do projeto
 ---
 
 # Melhorias
@@ -73,6 +77,8 @@
 * Deploy em cloud (AWS)
 * Enriquecer mais os testes unitários
 * Colocar mais validadores de campos
+* O endpoint /client/list poderia ter paginação e mostrar as contas
+* Mmelhorar o Logger
 
 
 
