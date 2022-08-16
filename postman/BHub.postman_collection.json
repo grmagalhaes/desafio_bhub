@@ -40,7 +40,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{hostname}}/v1/cliente/get?id=19",
+					"raw": "{{hostname}}/v1/cliente/get?id=13",
 					"host": [
 						"{{hostname}}"
 					],
@@ -52,7 +52,7 @@
 					"query": [
 						{
 							"key": "id",
-							"value": "19"
+							"value": "13"
 						}
 					]
 				}
@@ -83,6 +83,15 @@
 			"request": {
 				"method": "PUT",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\":13, \"telefone\":\"555555\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
 					"raw": "{{hostname}}/v1/cliente/update",
 					"host": [
@@ -123,38 +132,13 @@
 			"response": []
 		},
 		{
-			"name": "remove_account",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{hostname}}/v1/cliente/remove_account?id=1",
-					"host": [
-						"{{hostname}}"
-					],
-					"path": [
-						"v1",
-						"cliente",
-						"remove_account"
-					],
-					"query": [
-						{
-							"key": "id",
-							"value": "1"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "add_account",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"cliente\": 1, \"banco\" : \"800\", \"agencia\": \"2222\", \"conta\": \"3333\"}",
+					"raw": "{\"cliente\": 13, \"banco\" : \"600\", \"agencia\": \"2222\", \"conta\": \"3333\"}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -170,6 +154,65 @@
 						"v1",
 						"cliente",
 						"add_account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "remove_account",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{hostname}}/v1/cliente/remove_account?id=12",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"v1",
+						"cliente",
+						"remove_account"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "12"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "readiness",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{hostname}}/readiness",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"readiness"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "healthz",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{hostname}}/readiness",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"readiness"
 					]
 				}
 			},

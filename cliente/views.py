@@ -1,6 +1,3 @@
-from django.shortcuts import render
-
-# Create your views here.
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 from rest_framework import status
@@ -29,10 +26,10 @@ class ClientViewSet(ViewSet):
                 return Response(data=dict(msg=Msg.ERRO_CADASTRO_CLIENTE, id=None),
                                 status=status.HTTP_400_BAD_REQUEST, headers=hardening_header())
 
-        except (IntegrityError,) as e:
+        except (IntegrityError,):
             return Response(data=dict(msg=Msg.CLIENTE_JA_CADASTRADO, id=None),
                             status=status.HTTP_400_BAD_REQUEST, headers=hardening_header())
-        except (Exception,) as e:
+        except (Exception,):
             return Response(data=dict(msg=Msg.ERRO_CADASTRO_CLIENTE, id=None),
                             status=status.HTTP_400_BAD_REQUEST, headers=hardening_header())
 
@@ -58,12 +55,30 @@ class ClientViewSet(ViewSet):
 
     # atualiza um cliente
     def update(self, request):
-        clientes = Cliente.objects.all()
-        serializer = ClienteSerializer(clientes, many=True)
-        return Response(data=serializer.data, headers=hardening_header())
+        # recupera o id do cliente passado no body (JSON)
+        client_id = request.data.get('id')
+        try:
+            # recupera o registro do banco
+            cliente = Cliente.objects.get(pk=client_id)
+        except (ObjectDoesNotExist,):
+            # erro caso não encontre o registro
+            return Response(data=dict(msg=Msg.CLIENTE_NAO_ENCONTRADO),
+                            status=status.HTTP_404_NOT_FOUND, headers=hardening_header())
 
-    # atualiza um cliente
-    def list(self, request):
+        # preenche o serializer
+        serializer = ClienteSerializer(cliente, data=request.data, partial=True)
+        # caso seja válido atualiza apenas as informações vindas no request
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response(data=dict(msg=Msg.CLIENTE_ATUALIZADO_SUCESSO),
+                            status=status.HTTP_200_OK, headers=hardening_header())
+        else:
+            return Response(data=dict(msg=Msg.ERRO_CADASTRO_CLIENTE),
+                            status=status.HTTP_400_BAD_REQUEST, headers=hardening_header())
+
+    # lista todos os clientes
+    def list(self, _):
         clientes = Cliente.objects.all().values()
         serializer = ClienteSerializer(clientes, many=True)
         return Response(data=serializer.data, headers=hardening_header())
@@ -114,4 +129,3 @@ class DadosBancariosViewSet(ViewSet):
         except (ObjectDoesNotExist,):
             return Response(data=dict(msg=Msg.CONTA_NAO_ENCONTRADA),
                             status=status.HTTP_404_NOT_FOUND, headers=hardening_header())
-
